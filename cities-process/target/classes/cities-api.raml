@@ -1,0 +1,31 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/7500f3d5-4932-4d7f-a3a0-b13ea623adc5 # 
+title: Cities API
+version: 1.0
+
+/cities:
+  get:
+    queryParameters:
+      country:
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              [{
+                "country": "Belarus",
+                "city": "Riga" 
+              }]
+/weather:
+  get:
+    queryParameters: 
+      country:
+      city:
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              [{
+                "weather": "30c"
+              }]
