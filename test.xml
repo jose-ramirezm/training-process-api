@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:ws="http://www.mulesoft.org/schema/mule/ws" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+    <ws:consumer-config name="Web_Service_Consumer" wsdlLocation="http://www.webservicex.net/globalweather.asmx?wsdl" service="GlobalWeather" port="GlobalWeatherSoap12" serviceAddress="http://www.webservicex.net/globalweather.asmx" doc:name="Web Service Consumer"/>
+    <http:request-config name="HTTP_Request_Configuration" protocol="HTTPS" host="mocksvc.mulesoft.com" port="443" basePath="/mocks/b0182aa0-c8c0-442f-ab98-830ed758ff7a" doc:name="HTTP Request Configuration">
+        <http:raml-api-configuration location="weather.raml"/>
+    </http:request-config>
+    <flow name="SOAPClientFlow">
+        <http:listener config-ref="weather-httpListenerConfig" path="/test" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="CountryName" value="#[message.inboundProperties.'http.query.params'.name]" doc:name="Variable"/>
+        <dw:transform-message doc:name="SOAP Request">
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/xml
+%namespace ns0 http://www.webserviceX.NET
+---
+{
+	ns0#GetCitiesByCountry: {
+		ns0#CountryName: flowVars.CountryName
+	}
+}]]></dw:set-payload>
+        </dw:transform-message>
+        <ws:consumer config-ref="Web_Service_Consumer" operation="GetCitiesByCountry" doc:name="Web Service Consumer"/>
+        <dw:transform-message doc:name="Json Response" metadata:id="6d1fd736-3a20-4778-a42e-62147e5c9af9">
+            <dw:input-payload doc:sample="sample_data\GetCitiesByCountryResponse.xml"/>
+            <dw:input-variable variableName="CountryName"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+%namespace ns0 http://www.webserviceX.NET
+---
+[{
+	CountryName: payload.ns0#GetCitiesByCountryResponse.ns0#GetCitiesByCountryResult,
+	ns0#GetCitiesByCountryResponse: {
+	}
+}]]]></dw:set-payload>
+        </dw:transform-message>
+
+    </flow>
+</mule>
