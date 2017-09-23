@@ -1,0 +1,27 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/b0182aa0-c8c0-442f-ab98-830ed758ff7a # 
+title: weather
+/weather:
+  get:
+    description: Da la temperatura
+    queryParameters:
+      country:
+      city:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [{
+                "weather": "30c"
+              }]
+              
+/{country_name}: 
+  get: 
+    description: Get pincode of the country 
+    responses: 
+        200: 
+          body: 
+            application/json:
+              example: |
+                 {"Country": "MEXICO", "City": "Ensenada"}
