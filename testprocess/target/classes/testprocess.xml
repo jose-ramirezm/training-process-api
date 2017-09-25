@@ -11,14 +11,14 @@ http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/cu
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
     <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
     <http:request-config name="HTTP_Request_Configuration" host="mocksvc.mulesoft.com" port="442" basePath="/mocks/b0182aa0-c8c0-442f-ab98-830ed758ff7a" doc:name="HTTP Request Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration1" host="testservices.cloudhub.io" port="80" basePath="api" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration1" host="servicestest.cloudhub.io" port="80" basePath="api" doc:name="HTTP Request Configuration"/>
     <flow name="RESTClientWithRAMLFlow">
-        <http:listener config-ref="HTTP_Listener_Configuration" path="/RestGetWeather" allowedMethods="GET" doc:name="HTTP"/>
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/Rest" allowedMethods="GET" doc:name="HTTP"/>
         <set-variable variableName="CountryName" value="#[message.inboundProperties.'http.query.params'.country]" doc:name="CountryName"/>
         <set-variable variableName="city" value="#[message.inboundProperties.'http.query.params'.city]" doc:name="city"/>
         <http:request config-ref="HTTP_Request_Configuration1" path="/weather" method="GET" doc:name="HTTP">
             <http:request-builder>
-                <http:query-param paramName="country" value="#[flowVars.country]"/>
+                <http:query-param paramName="country" value="#[flowVars.CountryName]"/>
                 <http:query-param paramName="city" value="#[flowVars.city]"/>
             </http:request-builder>
         </http:request>
