@@ -1,0 +1,25 @@
+#%RAML 1.0
+baseUri: https://mocksvc.mulesoft.com/mocks/7500f3d5-4932-4d7f-a3a0-b13ea623adc5 # 
+title: REST API
+version: 1.0
+
+/restCities:
+  get:
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              [{
+                "city": "Aguascalientes",
+              }]
+/restWeather:
+  get:
+    responses: 
+      200:
+        body: 
+          application/json:
+            example: |
+              [{
+                "weather": "30c"
+              }]

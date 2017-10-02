@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
 	xmlns:spring="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -8,23 +8,21 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
-    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
-    <http:request-config name="HTTP_Request_Configuration"  host="cities-service.cloudhub.io" port="80" basePath="api" doc:name="HTTP Request Configuration">
-    </http:request-config>
-    <flow name="cities-processFlow">
+    <flow name="weather-processFlow">
         <set-property propertyName="content-type" value="application/json" doc:name="JSONType Property"/>
-        <http:request config-ref="HTTP_Request_Configuration" path="/cities" method="GET" doc:name="REST Client">
+        <http:request config-ref="HTTP_Request_Configuration" path="/weather" method="GET" doc:name="REST Client">
             <http:request-builder>
-                <http:query-param paramName="country" value="#[message.inboundProperties.'http.query.params'.country]"/>
+                <http:query-param paramName="country" value="Mexico"/>
+                <http:query-param paramName="city" value="Aguascalientes"/>
             </http:request-builder>
         </http:request>
-        <dw:transform-message doc:name="Transform Message" metadata:id="e18cfad8-6769-42cf-9863-19c2ee5e0c8e">
+        <dw:transform-message doc:name="Transform Message" metadata:id="c8d27128-0f5f-40e1-aa75-841f5893de46">
             <dw:input-payload mimeType="application/json"/>
             <dw:set-payload><![CDATA[%dw 1.0
 %output application/json
 ---
 {
-	city: payload.city
+	weather: payload.weather
 }]]></dw:set-payload>
         </dw:transform-message>
     </flow>
