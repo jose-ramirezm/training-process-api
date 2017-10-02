@@ -1,0 +1,11 @@
+{
+    "inputMessageMetadata": {},
+    "outputMessageMetadata": {
+        "messagePayload": {
+            "connectorName": "Web_Service_Consumer",
+            "typeId": "GetCitiesByCountryResponse"
+        }
+    },
+    "id": "784cce01-2b92-4af9-9e7b-4d131d4981db",
+    "version": "5.2.0.0"
+}

@@ -1,0 +1,30 @@
+#%RAML 0.8
+title: Cities API
+version: 1.0
+
+traits: 
+  - queryParams: !include traits/queryParams.yaml
+
+schemas: 
+  - citySchema: !include schemas/citySchema.json
+  - weatherSchema: !include schemas/weatherSchema.json
+
+resourceTypes: 
+  - citiesTypes: !include resourceTypes/cities.yaml
+  - weatherTypes: !include resourceTypes/weather.yaml
+  
+/cities:
+  type: {
+    citiesTypes: {
+      cities-schema: citySchema,
+      cities-example: !include examples/citiesExample.json
+    }
+  }
+
+/weather:
+  type: {
+    weatherTypes: {
+      weather-schema: weatherSchema,
+      weather-example: !include examples/weather.json
+    }
+  }

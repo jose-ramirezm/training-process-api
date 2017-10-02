@@ -1,0 +1,11 @@
+description: |
+      This API obtains the weather of a country
+get:
+    is: [queryParams]
+    description: This API obtains the weather of a country
+    responses:
+      200:
+        body:
+          application/json:
+            schema: <<weather-schema>>
+            example: <<weather-example>>

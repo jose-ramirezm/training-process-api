@@ -1,0 +1,11 @@
+description: |
+      This API obtains the cities of a country
+get:
+    is: [queryParams]
+    description: This API obtains the cities of a country
+    responses:
+      200:
+        body:
+          application/json:
+            schema: <<cities-schema>>
+            example: <<cities-example>>
