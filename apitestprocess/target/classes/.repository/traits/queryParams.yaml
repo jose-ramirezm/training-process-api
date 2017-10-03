@@ -1,0 +1,6 @@
+queryParameters:
+  country:
+  city:
+    description: |
+      The Country and City
+    required: true

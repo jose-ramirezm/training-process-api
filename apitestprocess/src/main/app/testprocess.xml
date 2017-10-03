@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:dw="http://www.mulesoft.org/schema/mule/ee/dw" xmlns:metadata="http://www.mulesoft.org/schema/mule/metadata" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+http://www.mulesoft.org/schema/mule/ee/dw http://www.mulesoft.org/schema/mule/ee/dw/current/dw.xsd">
+    <http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8083" doc:name="HTTP Listener Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration" host="mocksvc.mulesoft.com" port="442" basePath="/mocks/b0182aa0-c8c0-442f-ab98-830ed758ff7a" doc:name="HTTP Request Configuration"/>
+    <http:request-config name="HTTP_Request_Configuration1" host="servicestest.cloudhub.io" port="80" basePath="api" doc:name="HTTP Request Configuration"/>
+    <flow name="RESTClientWithRAMLFlow">
+        <http:listener config-ref="HTTP_Listener_Configuration" path="/Rest" allowedMethods="GET" doc:name="HTTP"/>
+        <set-variable variableName="CountryName" value="#[message.inboundProperties.'http.query.params'.country]" doc:name="CountryName"/>
+        <set-variable variableName="city" value="#[message.inboundProperties.'http.query.params'.city]" doc:name="city"/>
+        <http:request config-ref="HTTP_Request_Configuration1" path="/weather" method="GET" doc:name="HTTP">
+            <http:request-builder>
+                <http:query-param paramName="country" value="#[flowVars.CountryName]"/>
+                <http:query-param paramName="city" value="#[flowVars.city]"/>
+            </http:request-builder>
+        </http:request>
+        <dw:transform-message doc:name="Transform Message" metadata:id="4806e6ee-9413-4823-86ff-36e517d92a75">
+            <dw:input-payload mimeType="application/json"/>
+            <dw:input-variable doc:sample="sample_data\map_string_string_1.dwl" variableName="CityNameANDCountryName"/>
+            <dw:set-payload><![CDATA[%dw 1.0
+%output application/json
+---
+
+  {
+    'weather': payload.weather
+  }
+]]></dw:set-payload>
+        </dw:transform-message>
+    </flow>
+    
+</mule>

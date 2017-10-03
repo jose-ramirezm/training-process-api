@@ -1,0 +1,20 @@
+#%RAML 0.8
+title: cities-of-the-world
+version: 1.0
+baseUri: http://localhost:8080
+
+resourceTypes:
+  - weatherReadOnlyMember: !include resourceTypes/weather.yaml
+
+schemas:
+  - weatherResponse: !include schemas/weatherResSchema.json
+
+traits:
+  - queryParams: !include traits/queryParams.yaml
+
+/weather:
+   type: {
+    weatherReadOnlyMember: {
+      collectionItem-res-example: !include examples/weatherResponse.json
+      }
+    }

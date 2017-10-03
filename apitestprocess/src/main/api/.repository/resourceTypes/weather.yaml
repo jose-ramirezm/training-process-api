@@ -1,0 +1,55 @@
+description: |
+      This API obtains the cities of a country
+get:
+    is: [queryParams]
+    description: This API obtains the cities of a country
+    responses:
+      200:
+        body:
+          application/json:
+            example: <<collectionItem-res-example>>
+      400:
+        body:
+          application/json:
+            example: |
+                  {"message": "Incorrect input" }
+      401:
+        body:
+          application/json:
+           example: |
+                  {"message": "Login Required" }
+      403:
+        body:
+          application/json:
+           example: |
+                  {"message": "Forbidden" }
+      404:
+        body:
+          application/json:
+           example: |
+                  {"message": "Not Found" }
+      422:
+        body:
+          application/json:
+            example: |
+                  {"message": "Unprocessable Entity" }
+      500:
+        body:
+          application/json:
+            example: |
+                  {"message": "Server Error" }
+      501:
+        body:
+          application/json:
+            example: |
+                  {"message": "Not Implemented" }
+      503:
+        body:
+          application/json:
+            example: |
+                  {"message": "ervice Unavailable" }
+      504:
+        body:
+          application/json:
+           example: |
+                  {"message": "Gateway Timeout" }
