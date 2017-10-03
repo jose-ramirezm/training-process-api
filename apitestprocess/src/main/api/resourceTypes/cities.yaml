@@ -7,8 +7,8 @@ get:
       200:
         body:
           application/json:
-            schema: <<weather-schema>>
-            example: <<weather-collectionItem-res-example>>
+            schema: <<cities-schema>>
+            example: <<cities-collectionItem-res-example>>
       400:
         body:
           application/json:

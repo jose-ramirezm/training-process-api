@@ -17,6 +17,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
     <flow name="get:/weather:weather_process-config">
         <set-payload value="{&#xA;  &quot;location&quot;: &quot;BOSTON LOGAN INTERNATIONAL, MA, United States (KBOS) 42-22N 071-01W 54M&quot;,&#xA;  &quot;time&quot;: &quot;Nov 30, 2013 - 03:54 PM EST / 2013.11.30 2054 UTC&quot;,&#xA;  &quot;wind&quot;: &quot;from the E (100 degrees) at 5 MPH (4 KT):0&quot;,&#xA;  &quot;visibility&quot;: &quot;10 mile(s):0&quot;,&#xA;  &quot;skyConditions&quot;: &quot;mostly cloudy&quot;,&#xA;  &quot;temperature&quot;: &quot;30.9 F (-0.6 C)&quot;,&#xA;  &quot;dewPoint&quot;: &quot;18.0 F (-7.8 C)&quot;,&#xA;  &quot;relativeHumidity&quot;: &quot;58%&quot;,&#xA;  &quot;pressure&quot;: &quot;30.63 in. Hg (1037 hPa)&quot;,&#xA;  &quot;pressureTendency&quot;: &quot;0.07 inches (2.3 hPa) lower than three hours ago&quot;&#xA;}" doc:name="Set Payload"/>
     </flow>
+    <flow name="get:/cities:weather_process-config">
+        <set-payload value="{&#xA;  &quot;city&quot;: &quot;Ensenada&quot;&#xA;}" doc:name="Set Payload"/>
+    </flow>
     <apikit:mapping-exception-strategy name="weather_process-apiKitGlobalExceptionMapping">
         <apikit:mapping statusCode="404">
             <apikit:exception value="org.mule.module.apikit.exception.NotFoundException" />
